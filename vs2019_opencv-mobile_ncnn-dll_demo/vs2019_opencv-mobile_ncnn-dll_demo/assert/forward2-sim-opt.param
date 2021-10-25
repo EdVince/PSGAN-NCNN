@@ -1,0 +1,67 @@
+7767517
+65 71
+Input                    real_A                   0 1 real_A
+Input                    gamma                    0 1 gamma
+Input                    beta                     0 1 beta
+Convolution              Conv_0                   1 1 real_A 54 0=64 1=7 4=3 6=9408
+InstanceNorm             InstanceNormalization_3  1 1 54 57 0=64 1=1.000000e-05 2=0
+ReLU                     Relu_4                   1 1 57 58
+Convolution              Conv_5                   1 1 58 59 0=128 1=4 3=2 4=1 6=131072
+InstanceNorm             InstanceNormalization_8  1 1 59 62 0=128 1=1.000000e-05 2=0
+ReLU                     Relu_9                   1 1 62 63
+Convolution              Conv_10                  1 1 63 64 0=256 1=4 3=2 4=1 6=524288
+InstanceNorm             InstanceNormalization_13 1 1 64 67 0=256 1=1.000000e-05 2=0
+ReLU                     Relu_14                  1 1 67 68
+Split                    splitncnn_0              1 2 68 68_splitncnn_0 68_splitncnn_1
+Convolution              Conv_15                  1 1 68_splitncnn_1 69 0=256 1=3 4=1 6=589824
+InstanceNorm             InstanceNormalization_18 1 1 69 72 0=256 1=1.000000e-05 2=0
+ReLU                     Relu_19                  1 1 72 73
+Convolution              Conv_20                  1 1 73 74 0=256 1=3 4=1 6=589824
+InstanceNorm             InstanceNormalization_23 1 1 74 77 0=256 1=1.000000e-05 2=0
+BinaryOp                 Add_24                   2 1 68_splitncnn_0 77 78
+Split                    splitncnn_1              1 2 78 78_splitncnn_0 78_splitncnn_1
+Convolution              Conv_25                  1 1 78_splitncnn_1 79 0=256 1=3 4=1 6=589824
+InstanceNorm             InstanceNormalization_28 1 1 79 82 0=256 1=1.000000e-05 2=0
+ReLU                     Relu_29                  1 1 82 83
+Convolution              Conv_30                  1 1 83 84 0=256 1=3 4=1 6=589824
+InstanceNorm             InstanceNormalization_33 1 1 84 87 0=256 1=1.000000e-05 2=0
+BinaryOp                 Add_34                   2 1 78_splitncnn_0 87 88
+Split                    splitncnn_2              1 2 88 88_splitncnn_0 88_splitncnn_1
+Convolution              Conv_35                  1 1 88_splitncnn_1 89 0=256 1=3 4=1 6=589824
+InstanceNorm             InstanceNormalization_38 1 1 89 92 0=256 1=1.000000e-05 2=0
+ReLU                     Relu_39                  1 1 92 93
+Convolution              Conv_40                  1 1 93 94 0=256 1=3 4=1 6=589824
+InstanceNorm             InstanceNormalization_43 1 1 94 97 0=256 1=1.000000e-05 2=0
+BinaryOp                 Add_44                   2 1 88_splitncnn_0 97 98
+BinaryOp                 Add_46                   1 1 gamma 100 1=1 2=1.000000e+00
+BinaryOp                 Mul_47                   2 1 98 100 101 0=2
+BinaryOp                 Add_48                   2 1 101 beta 102
+Split                    splitncnn_3              1 2 102 102_splitncnn_0 102_splitncnn_1
+Convolution              Conv_49                  1 1 102_splitncnn_1 103 0=256 1=3 4=1 6=589824
+InstanceNorm             InstanceNormalization_52 1 1 103 106 0=256 1=1.000000e-05 2=0
+ReLU                     Relu_53                  1 1 106 107
+Convolution              Conv_54                  1 1 107 108 0=256 1=3 4=1 6=589824
+InstanceNorm             InstanceNormalization_57 1 1 108 111 0=256 1=1.000000e-05 2=0
+BinaryOp                 Add_58                   2 1 102_splitncnn_0 111 112
+Split                    splitncnn_4              1 2 112 112_splitncnn_0 112_splitncnn_1
+Convolution              Conv_59                  1 1 112_splitncnn_1 113 0=256 1=3 4=1 6=589824
+InstanceNorm             InstanceNormalization_62 1 1 113 116 0=256 1=1.000000e-05 2=0
+ReLU                     Relu_63                  1 1 116 117
+Convolution              Conv_64                  1 1 117 118 0=256 1=3 4=1 6=589824
+InstanceNorm             InstanceNormalization_67 1 1 118 121 0=256 1=1.000000e-05 2=0
+BinaryOp                 Add_68                   2 1 112_splitncnn_0 121 122
+Split                    splitncnn_5              1 2 122 122_splitncnn_0 122_splitncnn_1
+Convolution              Conv_69                  1 1 122_splitncnn_1 123 0=256 1=3 4=1 6=589824
+InstanceNorm             InstanceNormalization_72 1 1 123 126 0=256 1=1.000000e-05 2=0
+ReLU                     Relu_73                  1 1 126 127
+Convolution              Conv_74                  1 1 127 128 0=256 1=3 4=1 6=589824
+InstanceNorm             InstanceNormalization_77 1 1 128 131 0=256 1=1.000000e-05 2=0
+BinaryOp                 Add_78                   2 1 122_splitncnn_0 131 132
+Deconvolution            ConvTranspose_79         1 1 132 133 0=128 1=4 3=2 4=1 6=524288
+InstanceNorm             InstanceNormalization_82 1 1 133 136 0=128 1=1.000000e-05 2=0
+ReLU                     Relu_83                  1 1 136 137
+Deconvolution            ConvTranspose_84         1 1 137 138 0=64 1=4 3=2 4=1 6=131072
+InstanceNorm             InstanceNormalization_87 1 1 138 141 0=64 1=1.000000e-05 2=0
+ReLU                     Relu_88                  1 1 141 142
+Convolution              Conv_89                  1 1 142 143 0=3 1=7 4=3 6=9408
+UnaryOp                  Tanh_90                  1 1 143 fake_A 0=16
