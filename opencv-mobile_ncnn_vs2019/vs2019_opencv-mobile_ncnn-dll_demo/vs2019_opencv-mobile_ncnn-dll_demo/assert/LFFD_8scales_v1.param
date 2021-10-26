@@ -1,0 +1,160 @@
+7767517
+158 183
+Input            data                             0 1 data
+Convolution      conv1                            1 1 data conv1 0=64 1=3 11=3 3=2 13=2 4=0 14=0 5=1 6=1728
+ReLU             relu_conv1                       1 1 conv1 relu_conv1
+Convolution      conv2                            1 1 relu_conv1 conv2 0=64 1=3 11=3 3=2 13=2 4=0 14=0 5=1 6=36864
+Split            splitncnn_0                      1 2 conv2 conv2_splitncnn_0 conv2_splitncnn_1
+ReLU             relu_conv2                       1 1 conv2_splitncnn_1 relu_conv2
+Convolution      conv3                            1 1 relu_conv2 conv3 0=64 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=36864
+ReLU             relu_conv3                       1 1 conv3 relu_conv3
+Convolution      conv4                            1 1 relu_conv3 conv4 0=64 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=36864
+BinaryOp         _plus10                          2 1 conv2_splitncnn_0 conv4 _plus10 0=0
+Split            splitncnn_1                      1 2 _plus10 _plus10_splitncnn_0 _plus10_splitncnn_1
+ReLU             relu_conv4                       1 1 _plus10_splitncnn_1 relu_conv4
+Convolution      conv5                            1 1 relu_conv4 conv5 0=64 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=36864
+ReLU             relu_conv5                       1 1 conv5 relu_conv5
+Convolution      conv6                            1 1 relu_conv5 conv6 0=64 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=36864
+BinaryOp         _plus11                          2 1 _plus10_splitncnn_0 conv6 _plus11 0=0
+Split            splitncnn_2                      1 2 _plus11 _plus11_splitncnn_0 _plus11_splitncnn_1
+ReLU             relu_conv6                       1 1 _plus11_splitncnn_1 relu_conv6
+Convolution      conv7                            1 1 relu_conv6 conv7 0=64 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=36864
+ReLU             relu_conv7                       1 1 conv7 relu_conv7
+Convolution      conv8                            1 1 relu_conv7 conv8 0=64 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=36864
+BinaryOp         _plus12                          2 1 _plus11_splitncnn_0 conv8 _plus12 0=0
+Split            splitncnn_3                      1 2 _plus12 _plus12_splitncnn_0 _plus12_splitncnn_1
+ReLU             relu_conv8                       1 1 _plus12_splitncnn_1 relu_conv8
+Split            splitncnn_4                      1 2 relu_conv8 relu_conv8_splitncnn_0 relu_conv8_splitncnn_1
+Convolution      conv8_1                          1 1 relu_conv8_splitncnn_1 conv8_1 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=8192
+ReLU             relu_conv8_1                     1 1 conv8_1 relu_conv8_1
+Split            splitncnn_5                      1 2 relu_conv8_1 relu_conv8_1_splitncnn_0 relu_conv8_1_splitncnn_1
+Convolution      conv8_2_score                    1 1 relu_conv8_1_splitncnn_1 conv8_2_score 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv8_2_score               1 1 conv8_2_score relu_conv8_2_score
+Convolution      conv8_3_score                    1 1 relu_conv8_2_score conv8_3_score 0=2 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=256
+Softmax          softmax0                         1 1 conv8_3_score softmax0 1=1
+Convolution      conv8_2_bbox                     1 1 relu_conv8_1_splitncnn_0 conv8_2_bbox 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv8_2_bbox                1 1 conv8_2_bbox relu_conv8_2_bbox
+Convolution      conv8_3_bbox                     1 1 relu_conv8_2_bbox conv8_3_bbox 0=4 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=512
+Convolution      conv9                            1 1 relu_conv8_splitncnn_0 conv9 0=64 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=36864
+ReLU             relu_conv9                       1 1 conv9 relu_conv9
+Convolution      conv10                           1 1 relu_conv9 conv10 0=64 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=36864
+BinaryOp         _plus13                          2 1 _plus12_splitncnn_0 conv10 _plus13 0=0
+ReLU             relu_conv10                      1 1 _plus13 relu_conv10
+Split            splitncnn_6                      1 2 relu_conv10 relu_conv10_splitncnn_0 relu_conv10_splitncnn_1
+Convolution      conv10_1                         1 1 relu_conv10_splitncnn_1 conv10_1 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=8192
+ReLU             relu_conv10_1                    1 1 conv10_1 relu_conv10_1
+Split            splitncnn_7                      1 2 relu_conv10_1 relu_conv10_1_splitncnn_0 relu_conv10_1_splitncnn_1
+Convolution      conv10_2_score                   1 1 relu_conv10_1_splitncnn_1 conv10_2_score 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv10_2_score              1 1 conv10_2_score relu_conv10_2_score
+Convolution      conv10_3_score                   1 1 relu_conv10_2_score conv10_3_score 0=2 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=256
+Softmax          softmax1                         1 1 conv10_3_score softmax1 1=1
+Convolution      conv10_2_bbox                    1 1 relu_conv10_1_splitncnn_0 conv10_2_bbox 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv10_2_bbox               1 1 conv10_2_bbox relu_conv10_2_bbox
+Convolution      conv10_3_bbox                    1 1 relu_conv10_2_bbox conv10_3_bbox 0=4 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=512
+Convolution      conv11                           1 1 relu_conv10_splitncnn_0 conv11 0=64 1=3 11=3 3=2 13=2 4=0 14=0 5=1 6=36864
+Split            splitncnn_8                      1 2 conv11 conv11_splitncnn_0 conv11_splitncnn_1
+ReLU             relu_conv11                      1 1 conv11_splitncnn_1 relu_conv11
+Convolution      conv12                           1 1 relu_conv11 conv12 0=64 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=36864
+ReLU             relu_conv12                      1 1 conv12 relu_conv12
+Convolution      conv13                           1 1 relu_conv12 conv13 0=64 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=36864
+BinaryOp         _plus14                          2 1 conv11_splitncnn_0 conv13 _plus14 0=0
+Split            splitncnn_9                      1 2 _plus14 _plus14_splitncnn_0 _plus14_splitncnn_1
+ReLU             relu_conv13                      1 1 _plus14_splitncnn_1 relu_conv13
+Split            splitncnn_10                     1 2 relu_conv13 relu_conv13_splitncnn_0 relu_conv13_splitncnn_1
+Convolution      conv13_1                         1 1 relu_conv13_splitncnn_1 conv13_1 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=8192
+ReLU             relu_conv13_1                    1 1 conv13_1 relu_conv13_1
+Split            splitncnn_11                     1 2 relu_conv13_1 relu_conv13_1_splitncnn_0 relu_conv13_1_splitncnn_1
+Convolution      conv13_2_score                   1 1 relu_conv13_1_splitncnn_1 conv13_2_score 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv13_2_score              1 1 conv13_2_score relu_conv13_2_score
+Convolution      conv13_3_score                   1 1 relu_conv13_2_score conv13_3_score 0=2 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=256
+Softmax          softmax2                         1 1 conv13_3_score softmax2 1=1
+Convolution      conv13_2_bbox                    1 1 relu_conv13_1_splitncnn_0 conv13_2_bbox 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv13_2_bbox               1 1 conv13_2_bbox relu_conv13_2_bbox
+Convolution      conv13_3_bbox                    1 1 relu_conv13_2_bbox conv13_3_bbox 0=4 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=512
+Convolution      conv14                           1 1 relu_conv13_splitncnn_0 conv14 0=64 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=36864
+ReLU             relu_conv14                      1 1 conv14 relu_conv14
+Convolution      conv15                           1 1 relu_conv14 conv15 0=64 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=36864
+BinaryOp         _plus15                          2 1 _plus14_splitncnn_0 conv15 _plus15 0=0
+ReLU             relu_conv15                      1 1 _plus15 relu_conv15
+Split            splitncnn_12                     1 2 relu_conv15 relu_conv15_splitncnn_0 relu_conv15_splitncnn_1
+Convolution      conv15_1                         1 1 relu_conv15_splitncnn_1 conv15_1 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=8192
+ReLU             relu_conv15_1                    1 1 conv15_1 relu_conv15_1
+Split            splitncnn_13                     1 2 relu_conv15_1 relu_conv15_1_splitncnn_0 relu_conv15_1_splitncnn_1
+Convolution      conv15_2_score                   1 1 relu_conv15_1_splitncnn_1 conv15_2_score 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv15_2_score              1 1 conv15_2_score relu_conv15_2_score
+Convolution      conv15_3_score                   1 1 relu_conv15_2_score conv15_3_score 0=2 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=256
+Softmax          softmax3                         1 1 conv15_3_score softmax3 1=1
+Convolution      conv15_2_bbox                    1 1 relu_conv15_1_splitncnn_0 conv15_2_bbox 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv15_2_bbox               1 1 conv15_2_bbox relu_conv15_2_bbox
+Convolution      conv15_3_bbox                    1 1 relu_conv15_2_bbox conv15_3_bbox 0=4 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=512
+Convolution      conv16                           1 1 relu_conv15_splitncnn_0 conv16 0=128 1=3 11=3 3=2 13=2 4=0 14=0 5=1 6=73728
+Split            splitncnn_14                     1 2 conv16 conv16_splitncnn_0 conv16_splitncnn_1
+ReLU             relu_conv16                      1 1 conv16_splitncnn_1 relu_conv16
+Convolution      conv17                           1 1 relu_conv16 conv17 0=128 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=147456
+ReLU             relu_conv17                      1 1 conv17 relu_conv17
+Convolution      conv18                           1 1 relu_conv17 conv18 0=128 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=147456
+BinaryOp         _plus16                          2 1 conv16_splitncnn_0 conv18 _plus16 0=0
+ReLU             relu_conv18                      1 1 _plus16 relu_conv18
+Split            splitncnn_15                     1 2 relu_conv18 relu_conv18_splitncnn_0 relu_conv18_splitncnn_1
+Convolution      conv18_1                         1 1 relu_conv18_splitncnn_1 conv18_1 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv18_1                    1 1 conv18_1 relu_conv18_1
+Split            splitncnn_16                     1 2 relu_conv18_1 relu_conv18_1_splitncnn_0 relu_conv18_1_splitncnn_1
+Convolution      conv18_2_score                   1 1 relu_conv18_1_splitncnn_1 conv18_2_score 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv18_2_score              1 1 conv18_2_score relu_conv18_2_score
+Convolution      conv18_3_score                   1 1 relu_conv18_2_score conv18_3_score 0=2 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=256
+Softmax          softmax4                         1 1 conv18_3_score softmax4 1=1
+Convolution      conv18_2_bbox                    1 1 relu_conv18_1_splitncnn_0 conv18_2_bbox 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv18_2_bbox               1 1 conv18_2_bbox relu_conv18_2_bbox
+Convolution      conv18_3_bbox                    1 1 relu_conv18_2_bbox conv18_3_bbox 0=4 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=512
+Convolution      conv19                           1 1 relu_conv18_splitncnn_0 conv19 0=128 1=3 11=3 3=2 13=2 4=0 14=0 5=1 6=147456
+Split            splitncnn_17                     1 2 conv19 conv19_splitncnn_0 conv19_splitncnn_1
+ReLU             relu_conv19                      1 1 conv19_splitncnn_1 relu_conv19
+Convolution      conv20                           1 1 relu_conv19 conv20 0=128 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=147456
+ReLU             relu_conv20                      1 1 conv20 relu_conv20
+Convolution      conv21                           1 1 relu_conv20 conv21 0=128 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=147456
+BinaryOp         _plus17                          2 1 conv19_splitncnn_0 conv21 _plus17 0=0
+Split            splitncnn_18                     1 2 _plus17 _plus17_splitncnn_0 _plus17_splitncnn_1
+ReLU             relu_conv21                      1 1 _plus17_splitncnn_1 relu_conv21
+Split            splitncnn_19                     1 2 relu_conv21 relu_conv21_splitncnn_0 relu_conv21_splitncnn_1
+Convolution      conv21_1                         1 1 relu_conv21_splitncnn_1 conv21_1 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv21_1                    1 1 conv21_1 relu_conv21_1
+Split            splitncnn_20                     1 2 relu_conv21_1 relu_conv21_1_splitncnn_0 relu_conv21_1_splitncnn_1
+Convolution      conv21_2_score                   1 1 relu_conv21_1_splitncnn_1 conv21_2_score 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv21_2_score              1 1 conv21_2_score relu_conv21_2_score
+Convolution      conv21_3_score                   1 1 relu_conv21_2_score conv21_3_score 0=2 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=256
+Softmax          softmax5                         1 1 conv21_3_score softmax5 1=1
+Convolution      conv21_2_bbox                    1 1 relu_conv21_1_splitncnn_0 conv21_2_bbox 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv21_2_bbox               1 1 conv21_2_bbox relu_conv21_2_bbox
+Convolution      conv21_3_bbox                    1 1 relu_conv21_2_bbox conv21_3_bbox 0=4 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=512
+Convolution      conv22                           1 1 relu_conv21_splitncnn_0 conv22 0=128 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=147456
+ReLU             relu_conv22                      1 1 conv22 relu_conv22
+Convolution      conv23                           1 1 relu_conv22 conv23 0=128 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=147456
+BinaryOp         _plus18                          2 1 _plus17_splitncnn_0 conv23 _plus18 0=0
+Split            splitncnn_21                     1 2 _plus18 _plus18_splitncnn_0 _plus18_splitncnn_1
+ReLU             relu_conv23                      1 1 _plus18_splitncnn_1 relu_conv23
+Split            splitncnn_22                     1 2 relu_conv23 relu_conv23_splitncnn_0 relu_conv23_splitncnn_1
+Convolution      conv23_1                         1 1 relu_conv23_splitncnn_1 conv23_1 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv23_1                    1 1 conv23_1 relu_conv23_1
+Split            splitncnn_23                     1 2 relu_conv23_1 relu_conv23_1_splitncnn_0 relu_conv23_1_splitncnn_1
+Convolution      conv23_2_score                   1 1 relu_conv23_1_splitncnn_1 conv23_2_score 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv23_2_score              1 1 conv23_2_score relu_conv23_2_score
+Convolution      conv23_3_score                   1 1 relu_conv23_2_score conv23_3_score 0=2 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=256
+Softmax          softmax6                         1 1 conv23_3_score softmax6 1=1
+Convolution      conv23_2_bbox                    1 1 relu_conv23_1_splitncnn_0 conv23_2_bbox 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv23_2_bbox               1 1 conv23_2_bbox relu_conv23_2_bbox
+Convolution      conv23_3_bbox                    1 1 relu_conv23_2_bbox conv23_3_bbox 0=4 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=512
+Convolution      conv24                           1 1 relu_conv23_splitncnn_0 conv24 0=128 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=147456
+ReLU             relu_conv24                      1 1 conv24 relu_conv24
+Convolution      conv25                           1 1 relu_conv24 conv25 0=128 1=3 11=3 3=1 13=1 4=1 14=1 5=1 6=147456
+BinaryOp         _plus19                          2 1 _plus18_splitncnn_0 conv25 _plus19 0=0
+ReLU             relu_conv25                      1 1 _plus19 relu_conv25
+Convolution      conv25_1                         1 1 relu_conv25 conv25_1 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv25_1                    1 1 conv25_1 relu_conv25_1
+Split            splitncnn_24                     1 2 relu_conv25_1 relu_conv25_1_splitncnn_0 relu_conv25_1_splitncnn_1
+Convolution      conv25_2_score                   1 1 relu_conv25_1_splitncnn_1 conv25_2_score 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv25_2_score              1 1 conv25_2_score relu_conv25_2_score
+Convolution      conv25_3_score                   1 1 relu_conv25_2_score conv25_3_score 0=2 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=256
+Softmax          softmax7                         1 1 conv25_3_score softmax7 1=1
+Convolution      conv25_2_bbox                    1 1 relu_conv25_1_splitncnn_0 conv25_2_bbox 0=128 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=16384
+ReLU             relu_conv25_2_bbox               1 1 conv25_2_bbox relu_conv25_2_bbox
+Convolution      conv25_3_bbox                    1 1 relu_conv25_2_bbox conv25_3_bbox 0=4 1=1 11=1 3=1 13=1 4=0 14=0 5=1 6=512
