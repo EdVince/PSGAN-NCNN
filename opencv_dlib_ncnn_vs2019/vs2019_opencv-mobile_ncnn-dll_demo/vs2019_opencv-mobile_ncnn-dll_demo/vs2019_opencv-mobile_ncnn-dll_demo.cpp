@@ -9,13 +9,12 @@
 #include <opencv2/opencv.hpp>
 
 #include <dlib/image_processing/frontal_face_detector.h>
-#include <dlib/image_processing/render_face_detections.h>
 #include <dlib/image_processing.h>
-#include <dlib/gui_widgets.h>
-#include <dlib/image_io.h>
 #include <dlib/opencv.h>
 
 using namespace std;
+
+bool debug = true;
 
 dlib::frontal_face_detector detector = dlib::get_frontal_face_detector();
 dlib::shape_predictor predictor;
@@ -245,25 +244,15 @@ void process(cv::Mat mask, std::vector<std::vector<int>> lms, std::vector<cv::Ma
         for (int j = 0; j < 64; j++) {
             for (int k = 0; k < 64; k++) {
                 for (int n = 0; n < 136; n++) {
-                    tmp[n] = diff_re[i][n].at<double>(j, k);
+                    tmp[n] = std::abs(diff_re[i][n].at<double>(j, k));
                     tmp[n] = tmp[n] * tmp[n];
                 }
                 double norm = std::sqrt(std::accumulate(tmp.begin(), tmp.end(), 0));
-                //if (norm == 0) {
-                //    norm = 1e8;
-                //}
-                //for (int n = 0; n < 136; n++) {
-                //    diff_re[i][n].at<double>(j, k) /= norm;
-                //}
                 if (norm == 0) {
-                    for (int n = 0; n < 136; n++) {
-                        diff_re[i][n].at<double>(j, k) = 0.000001;
-                    }
+                    norm = 1e10;
                 }
-                else {
-                    for (int n = 0; n < 136; n++) {
-                        diff_re[i][n].at<double>(j, k) /= norm;
-                    }
+                for (int n = 0; n < 136; n++) {
+                    diff_re[i][n].at<double>(j, k) /= norm;
                 }
             }
         }
@@ -299,6 +288,7 @@ ncnn::Mat from_64_64_136(std::vector<cv::Mat> in)
         float* pt = out.channel(i);
         for (int j = 0; j < 64 * 64; j++) {
             *pt = *data;
+            //*pt = 1.f;
             pt++;
             data++;
         }
@@ -313,10 +303,16 @@ ncnn::Mat from_256_256_1(cv::Mat in)
     float* pt = out.channel(0);
     for (int j = 0; j < 256 * 256; j++) {
         *pt = *data;
+        //*pt = 1.f;
         pt++;
         data++;
     }
     return out;
+}
+
+void show(ncnn::Mat in)
+{
+    cout << "(" << in.c << "," << in.h << "," << in.w << ")" << endl;
 }
 
 void postprocess(cv::Mat source, cv::Mat& result)
@@ -343,6 +339,22 @@ void postprocess(cv::Mat source, cv::Mat& result)
     resultF.convertTo(result, CV_8U);
 }
 
+
+void softmax(float* src, float*dst)
+{
+    float alpha = *std::max_element(src, src+4096);
+    float denominator = 0;
+
+    for (int i = 0; i < 4096; ++i) {
+        dst[i] = std::exp(src[i] - alpha);
+        denominator += dst[i];
+    }
+
+    for (int i = 0; i < 4096; ++i) {
+        dst[i] /= denominator;
+    }
+}
+
 int main()
 {
     dlib::deserialize("assert/lms.dat") >> predictor;
@@ -350,7 +362,7 @@ int main()
 
     cv::Mat source = cv::imread("assert/source.png");
     cv::cvtColor(source, source, cv::COLOR_BGR2RGB);
-    cv::Mat reference = cv::imread("assert/makeup1.jpg");
+    cv::Mat reference = cv::imread("assert/reference.png");
     cv::cvtColor(reference, reference, cv::COLOR_BGR2RGB);
 
     cv::Mat real_A, real_B;
@@ -360,7 +372,7 @@ int main()
     preprocess(source, real_A, mask_A, diff_A, crop_face_A);
     preprocess(reference, real_B, mask_B, diff_B, crop_face_B);
 
-
+    
     ncnn::Net forward1;
     forward1.load_param("assert/forward1-sim-opt.param");
     forward1.load_model("assert/forward1-sim-opt.bin");
@@ -384,8 +396,9 @@ int main()
     ncnn::Mat ncnn_diff_B_1 = from_64_64_136(diff_B[1]);
     ncnn::Mat ncnn_diff_B_2 = from_64_64_136(diff_B[2]);
 
-
     ncnn::Extractor ex1 = forward1.create_extractor();
+    ex1.set_num_threads(8);
+    ex1.set_light_mode(true);
     ex1.input("real_A", ncnn_real_A);
     ex1.input("real_B", ncnn_real_B);
     ex1.input("mask_A_0", ncnn_mask_A_0);
@@ -410,6 +423,8 @@ int main()
     forward2.load_model("assert/forward2-sim-opt.bin");
 
     ncnn::Extractor ex2 = forward2.create_extractor();
+    ex2.set_num_threads(8);
+    ex2.set_light_mode(true);
     ex2.input("real_A", ncnn_real_A);
     ex2.input("gamma", gamma);
     ex2.input("beta", beta);
@@ -434,12 +449,10 @@ int main()
 
     cv::Mat source_crop = source(cv::Rect(cv::Point(crop_face_A.left(), crop_face_A.top()), cv::Point(crop_face_A.right(), crop_face_A.bottom()))).clone();
 
-
     postprocess(source_crop, fake_A);
 
-
     cv::cvtColor(fake_A, fake_A, cv::COLOR_RGB2BGR);
-    cv::imwrite("test.png", fake_A);
+    cv::imwrite("result.png", fake_A);
     
 
     return 0;
