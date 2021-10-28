@@ -18,6 +18,7 @@
 ### Resource
 1. 带有qt gui的exe程序: [百度网盘](https://pan.baidu.com/s/1PzlkoM3pC9Zxo9KDuNsdNw)(提取码:6666)
 ![image](./resource/exe.png)
+2. 知乎分析文章：https://zhuanlan.zhihu.com/p/426474467
 
 
 ### Reference
