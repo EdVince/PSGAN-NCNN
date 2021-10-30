@@ -16,7 +16,7 @@
 3. opencv-mobile_ncnn_qt_vs2019：opencv-mobile + ncnn + qt界面的VS2019工程
 
 ### Resource
-1. 带有qt gui的exe程序: [百度网盘](https://pan.baidu.com/s/1PzlkoM3pC9Zxo9KDuNsdNw)(提取码:6666)
+1. 带有qt gui的exe程序: [百度网盘](https://pan.baidu.com/s/16o7Va9wTdM3a8sp2m27sAw)(提取码:6666)
 ![image](./resource/exe.png)
 2. 知乎分析文章：https://zhuanlan.zhihu.com/p/426474467
 
