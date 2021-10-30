@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
-    setWindowTitle("×±ÈÝÇ¨ÒÆ/·Â×±(https://github.com/EdVince)");
+    setWindowTitle("¡Á¡À???¡§??/¡¤?¡Á¡À(https://github.com/EdVince)");
 }
 
 void MainWindow::on_openReferenceBtn_clicked()
@@ -46,14 +46,26 @@ void MainWindow::on_openSourceBtn_clicked()
 
 void MainWindow::on_goBtn_clicked()
 {
-    if (!source.empty() && !reference.empty())
-    {
+    if (!source.empty() && !reference.empty()) {
         fake = psgan.go(source, reference);
 
         QPixmap pixmap;
         pixmap = pixmap.fromImage(MatToQImage(fake));
         pixmap = pixmap.scaled(ui.showFake->width(), ui.showFake->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
         ui.showFake->setPixmap(pixmap);
+    }
+}
+
+void MainWindow::on_saveBtn_clicked()
+{
+    if (!fake.empty()) {
+        QString fileName = QFileDialog::getSaveFileName(this, tr("save image file"), "./", tr("Image files(*.png)"));
+        if (!fileName.isEmpty()) {
+            std::string path = fileName.toLocal8Bit().toStdString();
+            cv::Mat fakeRGB;
+            cv::cvtColor(fake, fakeRGB, cv::COLOR_RGB2BGR);
+            cv::imwrite(path, fakeRGB);
+        }
     }
 }
 

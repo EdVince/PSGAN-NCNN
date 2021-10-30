@@ -22,6 +22,7 @@ private slots:
     void on_openReferenceBtn_clicked();
     void on_openSourceBtn_clicked();
     void on_goBtn_clicked();
+    void on_saveBtn_clicked();
 
 private:
     Ui::MainWindowClass ui;
